@@ -3,10 +3,10 @@
 
 Two small agents that use **Gemini** + **MCP tools** under a **strict (qualified) system prompt** to perform multi-step tasks with verifiable outputs:
 
-- **SRS Deck Builder:** Q/A markdown → parsed cards → QC → spaced-repetition schedule → **CSV artifact**  
+- **SRS Deck Builder:** Q/A markdown → parsed cards → QC → spaced-repetition schedule → **CSV artifact**
 - **Math Agent:** plans arithmetic step-by-step → tool calls to calculate & verify → **final answer**
 
-Meets assignment constraints: uses a qualified prompt, not a summarizer/stocks/“simple” tool, multi-step with validation, tangible outputs.
+**Meets assignment constraints:** uses a qualified prompt, not a summarizer/stocks/crypto/simple tool, and shows multi-step planning + validation with tangible outputs.
 
 ---
 
@@ -40,9 +40,9 @@ python examples/run_eval_via_mcp.py -f examples/weak_prompt.txt
 
 ---
 
-## ✅ New Final Prompt (qualified) — used for grading
+## ✅ New Final Prompt (Qualified) — used for grading
 
-Save as: `examples/student_prompt_strong.txt`, then evaluate it with the command below.
+Save this as `examples/student_prompt_strong.txt`, then evaluate with the command below.
 
 ```
 You are a Multi-Step Research & Planning Assistant.
@@ -91,7 +91,7 @@ STRUCTURED OUTPUT — RETURN ONLY THIS JSON OBJECT
         {"tool": "<name>", "args": {"q": "<query or params>"}}
       ],
       "tool_results_summary": "<plain text or null>",
-      "sanity_check": {"passed": true|false, "notes": "<why>"},
+      "sanity_check": {"passed": true, "notes": "<why>"},
       "status": "done|revised|blocked"
     }
   ],
@@ -132,10 +132,10 @@ python examples/run_eval_via_mcp.py -f examples/student_prompt_strong.txt
 
 ## Why this satisfies the assignment
 
-- **Qualified prompts** strictly control the LLM: single-line function calls or fixed JSON, pipeline order, self-checks, and fallbacks.  
-- **Multi-step & tool-using:** LLM is the planner; MCP tools do deterministic work (parse/QC/schedule/export, or calc/verify).  
-- **Verifiable outputs:** CSV file for SRS; verified intermediate math steps + final answer for Math.  
-- **Not a summarizer/stock/crypto/simple tool.**
+- **Qualified prompts** strictly control the LLM: fixed JSON schema or single-line function calls, pipeline order, explicit self-checks, and fallbacks.  
+- **Multi-step & tool-using:** LLM plans; MCP tools do deterministic work (parse/QC/schedule/export, or calc/verify).  
+- **Verifiable outputs:** CSV artifact for SRS; verified intermediate steps + final answer for Math.  
+- **Not** a summarizer / stock / crypto / “simple” tool.
 
 ---
 
@@ -159,11 +159,11 @@ requirements.txt
 .env.example
 ```
 
-Suggested `.gitignore`:
+**Suggested `.gitignore`:**
 ```
 .venv/
 __pycache__/
-.DS_Store
+.DS_Store/
 .env
 outputs/*.csv
 ```
@@ -192,10 +192,10 @@ q,a,learn_on,reviews_on
 
 ## Troubleshooting
 
-- **429 quota / rate limits:** re-run later; keep demo short.  
-- **404 model not found:** use `gemini-2.0-flash` (supported for `v1beta` generateContent).  
-- **JSON-RPC “box drawing” errors:** make sure tool logs go to **STDERR** (already set).  
-- **“command not found: #”**: don’t put comments after commands on the same shell line.  
+- **429 quota / rate limits:** rerun later; keep demo short.  
+- **404 model not found:** use `gemini-2.0-flash` (supported for `v1beta` `generateContent`).  
+- **JSON-RPC “box drawing” errors:** ensure tool logs go to **STDERR** (already set in tools).  
+- **`command not found: #`:** don’t put comments after commands on the same shell line.
 
 ---
 
